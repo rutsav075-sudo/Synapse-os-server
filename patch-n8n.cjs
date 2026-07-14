@@ -46,7 +46,7 @@ function walkDir(dir, callback) {
 
 // Targeted string replacements to avoid breaking variables!
 const replacements = [
-    { regex: /<title>.*<\/title>/gi, replace: "<title>Synapse OS</title><script>localStorage.setItem('n8n-theme', 'light');</script>" },
+    { regex: /<title>.*<\/title>/gi, replace: "<title>Synapse OS</title><script>localStorage.setItem('n8n-theme', 'light');</script><style>a[href*=\"/templates\"], a[href*=\"/insights\"], [data-test-id*=\"templates\"], [data-test-id*=\"insights\"], [data-test-id*=\"help\"], a[href*=\"https://docs.n8n.io\"] { display: none !important; }</style>" },
     { regex: />\s*Welcome to n8n\s*</gi, replace: ">Welcome to Synapse<" },
     { regex: /title: *"n8n"/gi, replace: 'title:"Synapse"' },
     { regex: /title: *'n8n'/gi, replace: "title:'Synapse'" },
