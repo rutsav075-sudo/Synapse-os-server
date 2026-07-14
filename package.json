@@ -1,0 +1,13 @@
+{
+  "name": "synapse-server",
+  "version": "1.0.0",
+  "description": "Synapse OS backend server based on n8n",
+  "main": "index.js",
+  "scripts": {
+    "start": "n8n",
+    "postinstall": "node patch-n8n.cjs"
+  },
+  "dependencies": {
+    "n8n": "latest"
+  }
+}
