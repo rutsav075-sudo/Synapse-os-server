@@ -303,4 +303,35 @@ targetDirs.forEach(targetDir => {
     });
 });
 
+// --- BACKEND SECURITY PATCH FOR IFRAME EMBEDDING ---
+const serverJsPaths = [
+    path.join(__dirname, 'node_modules', 'n8n', 'dist', 'server.js'),
+    path.join(__dirname, 'node_modules', 'n8n', 'dist', 'Server.js'),
+    '/usr/local/lib/node_modules/n8n/dist/server.js',
+    '/usr/local/lib/node_modules/n8n/dist/Server.js'
+];
+
+serverJsPaths.forEach(p => {
+    if (fs.existsSync(p)) {
+        console.log('Patching n8n backend security headers in:', p);
+        let content = fs.readFileSync(p, 'utf8');
+        let modified = false;
+
+        if (content.includes("{ action: 'sameorigin' }")) {
+            content = content.replace(/{ action: 'sameorigin' }/g, 'false');
+            modified = true;
+        }
+
+        if (content.includes("contentSecurityPolicy: (0, isEmpty_1.default)(cspDirectives)")) {
+            content = content.replace(/contentSecurityPolicy: \(0, isEmpty_1\.default\)\(cspDirectives\)/g, 'contentSecurityPolicy: false');
+            modified = true;
+        }
+
+        if (modified) {
+            fs.writeFileSync(p, content, 'utf8');
+            console.log('[PATCHED] Backend security headers disabled successfully!');
+        }
+    }
+});
+
 console.log("n8n Deep Patching Complete! All UI strings branded to Synapse.");
