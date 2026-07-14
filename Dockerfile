@@ -11,9 +11,12 @@ RUN node /patch-n8n.cjs
 # Disable default security headers
 ENV N8N_DISABLE_UI_SECURITY=true
 
-# Force n8n to use port 8080 and tell Railway to route traffic there
-ENV N8N_PORT=8080
-EXPOSE 8080
+# Copy the start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Switch back to the safe node user
 USER node
+
+# Override the entrypoint to map the dynamic Railway PORT
+ENTRYPOINT ["/start.sh"]
