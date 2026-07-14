@@ -11,12 +11,11 @@ RUN node /patch-n8n.cjs
 # Disable default security headers
 ENV N8N_DISABLE_UI_SECURITY=true
 
-# Copy the start script
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
 # Switch back to the safe node user
 USER node
 
-# Override the entrypoint to map the dynamic Railway PORT
-ENTRYPOINT ["/start.sh"]
+# Reset entrypoint so we can use a shell command to map the Railway port
+ENTRYPOINT []
+
+# Map the dynamic Railway $PORT to n8n, then start it normally
+CMD export N8N_PORT=${PORT:-5678} && exec tini -- /docker-entrypoint.sh n8n
